@@ -1,0 +1,22 @@
+version: '3.5'
+
+services:
+  django:
+    build:
+      args:
+      - DEBUG=1
+      context: ./assignment
+      dockerfile: Dockerfile
+    environment:
+    - DJANGO_DEBUG=1
+    env_file:
+    - .env
+    volumes:
+    - ./assignment:/app
+    ports:
+    - 5000:5000/tcp
+    - 5678:5678/tcp
+    command: |
+     sh -c "
+     pip install debugpy;
+     python -m debugpy --listen 0.0.0.0:5678 manage.py runserver 0.0.0.0:5000"
